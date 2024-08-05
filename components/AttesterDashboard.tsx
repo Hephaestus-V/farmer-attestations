@@ -17,11 +17,17 @@ const AttesterDashboard: React.FC = () => {
   }, [])
 
   const fetchPendingRequests = async () => {
+    console.log("hi from fetchpending req")
     const response = await fetch('/api/attester')
     const data = await response.json()
-    if (data.success) {
-      setPendingRequests(data.pendingRequests)
+    console.log(JSON.stringify(data));
+    if(response.status==200){
+        setPendingRequests(data.pendingRequests)
     }
+    else{
+        console.log("Not working");
+    }
+    console.log("pendingreq"+pendingRequests)
   }
 
   const handleAttest = async (request: AttestationRequest) => {

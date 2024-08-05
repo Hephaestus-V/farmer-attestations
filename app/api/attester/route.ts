@@ -3,6 +3,7 @@ import { getPendingRequests, createAttestation } from '../../../lib/attesterServ
 
 export async function GET() {
   try {
+    console.log("hi from get")
     const pendingRequests = await getPendingRequests()
     return NextResponse.json({ success: true, pendingRequests })
   } catch (error) {
@@ -16,6 +17,6 @@ export async function POST(req: NextRequest) {
     const attestationUID = await createAttestation(requestId, checkpoint, farmerAddress, ipfsHash)
     return NextResponse.json({ success: true, message: 'Attestation created successfully', attestationUID })
   } catch (error) {
-    return NextResponse.json({ success: false }, { status: 500 })
+    return NextResponse.json({ success: false, message: error }, { status: 500 })
   }
 }

@@ -1,7 +1,18 @@
 import Image from "next/image";
 import Link from 'next/link';
+import { createTable } from "@/lib/database"; 
+
+async function initializeDatabase() {
+  try {
+    await createTable()
+    console.log('Database initialized successfully')
+  } catch (error) {
+    console.error('Failed to initialize database:', error)
+  }
+}
 
 export default function Home() {
+  initializeDatabase()
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <nav>

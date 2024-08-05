@@ -8,7 +8,9 @@ interface FarmerFormProps {
 const FarmerForm: React.FC<FarmerFormProps> = ({ onSubmit }) => {
   const [farmerAddress, setFarmerAddress] = useState('')
   const [checkpoint, setCheckpoint] = useState<CheckpointType>('PRE_SOWING')
-  const [formData, setFormData] = useState({})
+  const [formData, setFormData] = useState({
+    farmer:"hei"
+  })
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -35,7 +37,7 @@ const FarmerForm: React.FC<FarmerFormProps> = ({ onSubmit }) => {
         <option value="MID_GROWTH">Mid-Growth</option>
         <option value="PRE_HARVEST">Pre-Harvest</option>
       </select>
-      {/* Add more form fields based on the selected checkpoint */}
+
       <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600">
         Submit Attestation Request
       </button>

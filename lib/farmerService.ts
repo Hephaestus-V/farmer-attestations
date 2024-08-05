@@ -3,13 +3,18 @@ import { uploadToIPFS } from './ipfsService'
 import { SCHEMAS, CheckpointType } from './schema'
 
 export async function submitAttestationRequest(farmerAddress: string, checkpoint: CheckpointType, data: any): Promise<string> {
-  if (!SCHEMAS[checkpoint]) {
+  console.log("hi from submitAttestationRequest")
+    if (!SCHEMAS[checkpoint]) {
     throw new Error('Invalid checkpoint')
   }
 
   const ipfsHash = await uploadToIPFS(data)
-  await insertAttestationRequest(farmerAddress, checkpoint, ipfsHash)
-
-  console.log(`Attestation request submitted for farmer ${farmerAddress} at checkpoint ${checkpoint}`)
+  try{ 
+    await insertAttestationRequest(farmerAddress, checkpoint, ipfsHash)
+    }catch(error){
+        console.log(error)
+    }
+  console.log(ipfsHash+" this is ipfs hash")
+  console.log(`Attestation request submitted for farmer ${farmerAddress} for checkpoint ${checkpoint}` )
   return ipfsHash
 }
