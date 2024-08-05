@@ -12,9 +12,11 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+    console.log("hi from post")
   const { requestId, checkpoint, farmerAddress, ipfsHash } = await req.json()
+  console.log(ipfsHash)
   try {
-    const attestationUID = await createAttestation(requestId, checkpoint, farmerAddress, ipfsHash)
+    const attestationUID = await createAttestation(requestId,farmerAddress, checkpoint , ipfsHash)
     return NextResponse.json({ success: true, message: 'Attestation created successfully', attestationUID })
   } catch (error) {
     return NextResponse.json({ success: false, message: error }, { status: 500 })
