@@ -6,14 +6,13 @@ import { CheckpointType } from '../../lib/schema'
 export default function FarmerPage() {
   const handleSubmit = async (farmerAddress: string, checkpoint: CheckpointType, data: any) => {
     console.log("hifrom farmer page")
+    console.log(data)
     const response = await fetch('/api/farmer', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ farmerAddress, checkpoint, data: {"he": "dfah"} })
+      body: JSON.stringify({ farmerAddress, checkpoint, data })
     })
-    console.log("hiiiii")
     const result = await response.json()
-    console.log(result+"hi")
     if (result.success) {
       alert(`Attestation request submitted successfully. IPFS Hash: ${result.ipfsHash}`)
     } else {

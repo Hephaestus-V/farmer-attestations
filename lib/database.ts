@@ -30,7 +30,7 @@ function getTableName() {
 
 export async function insertAttestationRequest(farmerAddress: string, checkpoint: string, ipfsHash: string) {
   console.log("Inserting attestation request")
-  const tableName = "farmer_attestations_11155420_136"
+  const tableName = "farmer_attestations_11155420_138"
   const { meta: insert } = await db
     .prepare(`INSERT INTO ${tableName} (farmer_address, checkpoint, ipfs_hash, status, timestamp) VALUES (?, ?, ?, ?, ?);`)
     .bind(farmerAddress, checkpoint, ipfsHash, 'pending', Math.floor(Date.now() / 1000))
@@ -38,17 +38,18 @@ export async function insertAttestationRequest(farmerAddress: string, checkpoint
 
   await insert?.txn?.wait() ?? Promise.resolve()
   console.log(`Attestation request inserted for farmer ${farmerAddress}`)
+  console.log("table name ",actualTableName)
 }
 
 export async function getPendingAttestationRequests() {
   console.log("Fetching pending attestation requests")
-  const tableName = "farmer_attestations_11155420_136"
+  const tableName = "farmer_attestations_11155420_138"
   const { results } = await db.prepare(`SELECT * FROM ${tableName} WHERE status = 'pending';`).all()
   return results
 }
 
 export async function updateAttestationStatus(id:number,address: string, status: string, attestationIpfsHash: string | null = null) {
-  const tableName = "farmer_attestations_11155420_136"
+  const tableName = "farmer_attestations_11155420_138"
   let query = `UPDATE ${tableName} SET status = ? WHERE id = ?;`
   let params = [status, id]
 
@@ -66,8 +67,8 @@ export async function updateAttestationStatus(id:number,address: string, status:
   console.log(`Attestation status updated for farmer ${address}`)
 }
 
-export async function getAttestationById(id: number) {
-  const tableName = "farmer_attestations_11155420_136"
-  const { results } = await db.prepare(`SELECT * FROM ${tableName} WHERE id = ?;`).bind(id).all()
+export async function getAttestationById(address: string) {
+  const tableName = "farmer_attestations_11155420_138"
+  const { results } = await db.prepare(`SELECT * FROM ${tableName} WHERE farmer_address = ?;`).bind(address).all()
   return results[0] || null
 }
